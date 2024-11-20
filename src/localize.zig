@@ -1,14 +1,12 @@
 const std = @import("std");
-const Allocator = std.mem.Allocator;
 
+pub const Data = @import("Data.zig");
 pub const Parser = @import("Parser.zig");
 pub const Message = @import("Message.zig");
+pub const Resource = @import("Resource.zig");
+pub const Locale = Resource.Locale;
 
-pub fn parse(allocator: Allocator, src: []const u8, options: Parser.Options) !Message {
-    var parser = try Parser.init(allocator, options);
-    defer parser.deinit();
-    return parser.parseMessage(src);
-}
+pub const EmptyLocale = &Locale{};
 
 test Message {
     std.testing.refAllDecls(@This());

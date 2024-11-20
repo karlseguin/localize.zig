@@ -14,7 +14,6 @@ pub fn build(b: *std.Build) !void {
         .optimize = optimize,
         .test_runner = b.path("test_runner.zig"),
     });
-
     const run_test = b.addRunArtifact(lib_test);
     run_test.has_side_effects = true;
 
