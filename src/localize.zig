@@ -1,10 +1,13 @@
 const std = @import("std");
 
+pub const resource = @import("resource.zig");
+
+pub const Resource = resource.Resource;
+pub const Locale = resource.Locale;
+
 pub const Data = @import("Data.zig");
 pub const Parser = @import("Parser.zig");
 pub const Message = @import("Message.zig");
-pub const Resource = @import("Resource.zig");
-pub const Locale = Resource.Locale;
 
 pub const EmptyLocale = &Locale{};
 
