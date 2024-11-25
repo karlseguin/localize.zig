@@ -26,17 +26,19 @@ exe.root_module.addImport("localize", localize.module("localize"));
 First, create a `Resource`:
 
 ```zig
-const locales: []const []const u8 = &.{"en-US", "fr-FR"}
-var resource = try localize.Resource.init(allocator, locales);
+var resource = try localize.Resource(Locales).init(allocator);
 defer resource.deinit();
+
+const Locales = enum {
+    en,
+    fr,
+};
 ```
 
-This will likely be a long-lived object. The locales can be freed after `init` returns (`init` clones the values).
-
-Next, create a parser for each locale and add messages:
+This will likely be a long-lived object. Next, create a parser for each locale and add messages:
 
 ```zig
-var parser = try resource.parser("en-US", .{});
+var parser = try resource.parser(.en, .{});
 defer parser.deinit();
 
 // loop over entries in a file, or something
@@ -54,7 +56,7 @@ try parser.add("string_len_min", \\ must be at least {min}
 Once all messages have been loaded, you can use `resource.write` to write a localized message:
 
 ```zig
-try resource.write(writer, "en-US", "string_len_min", .{.min = 6});
+try resource.write(writer, .en, "string_len_min", .{.min = 6});
 ```
 
 The `write` method is thread-safe.
@@ -64,7 +66,7 @@ In cases where you'll be generating multiple message for a single locale, you ca
 ```zig
 // you very likely have logic in your code that makes it so that
 // this could never return null
-var locale = resource.getLocale("en-US") orelse unreachable;
+var locale = resource.getLocale(.en) orelse unreachable;
 
 locale.write("string_len_min", .{.min = 6});
 ```
